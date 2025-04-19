@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Dashboard</title>
+  <style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Improved font */
+        background-color: #EAE7DC;
+        color: #8E8D8A;
+    }
+  
+    .vendor-page {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #DAC3A5;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+  
+    .vendor-info {
+        padding: 20px;
+        text-align: center;
+    }
+  
+    .vendor-info h2 {
+        color: #E85A4F;
+        margin-bottom: 20px;
+        font-size: 2em; /* Larger font size */
+        font-weight: bold;
+    }
+  
+    .vendor-info p {
+        margin: 10px 0;
+        font-size: 1.1em;
+        line-height: 1.6;
+    }
+  
+    /* File Upload Styles */
+    .file-upload {
+        margin: 20px 0;
+    }
+  
+    .file-upload input[type="file"] {
+        padding: 10px;
+        border: 2px solid #E98074;
+        border-radius: 6px;
+        background-color: #EAE7DC;
+        font-size: 1em;
+        cursor: pointer;
+    }
+  
+    .file-upload input[type="file"]:hover {
+        border-color: #E85A4F;
+        background-color: #F9F4F1;
+    }
+  
+    /* Button Styles */
+    button {
+        background-color: #E85A4F;
+        color: white;
+        padding: 12px 20px;
+        font-size: 1.1em;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 10px;
+    }
+  
+    button:hover {
+        background-color: #6b6a67;
+        transform: translateY(-2px); /* Subtle hover effect */
+    }
+  
+    .logout {
+        background-color: #8E8D8A;
+        color: #EAE7DC;
+        padding: 12px 20px;
+        font-size: 1.1em;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+  
+    .logout:hover {
+        background-color: #6b6a67;
+        transform: translateY(-2px);
+    }
+  
+    /* Gallery Styles */
+    .vendor-gallery {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+  
+    .vendor-gallery img {
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+  
+    .vendor-gallery img:hover {
+        transform: scale(1.05);
+    }
+  
+    /* General Styles */
+    h2, p {
+        font-weight: 400;
+    }
+  
+    /* Responsive Styling */
+    @media screen and (max-width: 600px) {
+        .vendor-page {
+            padding: 15px;
+        }
+  
+        .vendor-info h2 {
+            font-size: 1.6em;
+        }
+  
+        button {
+            padding: 10px 16px;
+        }
+    }
+  </style>
+  
+</head>
+
+<body>
+  <div class="vendor-page">
+    <div class="vendor-info">
+      <h2>Vendor Dashboard</h2>
+      <p><strong>Name:</strong> <span id="vendor-name"></span></p>
+      <p><strong>Email:</strong> <span id="vendor-email"></span></p>
+      <p><strong>Mobile:</strong> <span id="vendor-mobile"></span></p>
+      <div class="file-upload">
+        <label for="file-upload">Upload Image:</label>
+        <input type="file" id="file-upload" accept="image/*">
+      </div>
+      <button type="button" onclick="uploadFile()">Upload</button>
+    </div>
+
+    <button class="logout" type="button" href='/logout'>Logout</button>
+    <div id="vendor-gallery" class="vendor-gallery"></div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+  <script>
+    window.onload = async function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const email = urlParams.get('email');
+      if (!email) {
+        alert("No vendor email found.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/vendor?email=${encodeURIComponent(email)}`);
+        const vendor = await res.json();
+        if (res.ok) {
+          document.getElementById('vendor-name').textContent = vendor.name;
+          document.getElementById('vendor-email').textContent = vendor.email;
+          document.getElementById('vendor-mobile').textContent = vendor.mobile;
+          loadImages(email);
+        } else {
+          alert(vendor.error || "Vendor not found");
+        }
+      } catch (err) {
+        console.error("Error loading vendor data:", err);
+        alert("Failed to load vendor data.");
+      }
+    };
+
+    async function uploadFile() {
+      const email = new URLSearchParams(window.location.search).get("email");
+      const fileInput = document.getElementById('file-upload');
+      const file = fileInput.files[0];
+      if (!email || !file) {
+        alert("Please select an image and ensure you're logged in.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('email', email);
+
+      try {
+        const res = await fetch('/api/uploadWork', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          alert('Image uploaded successfully!');
+          fileInput.value = ''; // clear the input
+          loadImages(email); // Reload images after upload
+        } else {
+          alert(result.error || 'Upload failed');
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error uploading image");
+      }
+    }
+
+    async function loadImages(email) {
+      try {
+        const res = await fetch(`/api/vendorImages?email=${encodeURIComponent(email)}`);
+        const images = await res.json();
+        
+        const gallery = document.getElementById('vendor-gallery');
+        gallery.innerHTML = ''; // Clear existing images
+
+        images.forEach(image => {
+          const imgElement = document.createElement('img');
+          imgElement.src = `data:${image.contentType};base64,${image.base64}`;
+          gallery.appendChild(imgElement);
+        });
+      } catch (err) {
+        console.error("Error loading images:", err);
+      }
+    }
+  </script>
+</body>
+</html>

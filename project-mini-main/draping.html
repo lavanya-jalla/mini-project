@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draping Services</title>
+  
+  <style>
+    :root {
+      --primary: #E7717D;
+      --secondary: #C2CAD0;
+      --neutral: #C2B9B0;
+      --accent: #AFD275;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 40px 0;
+    }
+
+    h2 {
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .service-card {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .service-card .icon {
+      font-size: 40px;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .service-card h3 {
+      color: var(--primary);
+    }
+
+    .service-card p {
+      color: #333;
+      margin: 10px 0 0;
+    }
+
+    .vendor-list {
+      margin-top: 40px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .vendor-list h3 {
+      color: var(--primary);
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <section class="featured-services">
+    <div class="container">
+      <h2>Draping Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="icon">
+            <i class="fas fa-magic"></i>
+          </div>
+          <h3>Exquisite Draping Designs</h3>
+          <p>Experience elegance with our exquisite draping designs, perfect for weddings and special events.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="vendor-list" id="vendorList">
+      <h2>Registered Draping Vendors</h2>
+      <!-- Vendor details will appear here -->
+    </div>
+  </div>
+
+  <script>
+    const vendorList = document.getElementById("vendorList");
+
+    // Load vendors from backend
+    async function loadVendors() {
+      try {
+        const response = await fetch("http://localhost:3000/api/vendors/draping.html");
+        const vendors = await response.json();
+        vendorList.innerHTML = "<h2>Registered Draping Vendors</h2>";
+        vendors.forEach(vendor => {
+          const vendorDiv = document.createElement("div");
+          vendorDiv.innerHTML = `
+            <h3>${vendor.name}</h3>
+            <p>Email: ${vendor.email}</p>
+            <p>Address: ${vendor.address}</p>
+            <p>Mobile: ${vendor.mobile}</p>
+            ${vendor.shop ? `<p>Shop Address: ${vendor.shop}</p>` : ""}
+          `;
+          vendorList.appendChild(vendorDiv);
+        });
+      } catch (error) {
+        console.error("Error loading vendors:", error);
+      }
+    }
+
+    // Load vendors on page load
+    loadVendors();
+  </script>
+</body>
+</html>

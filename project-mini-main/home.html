@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Creative Homepage</title>
+  <style>
+    :root {
+      --red-orange: #E43D12;
+      --pink-red: #D6536D;
+      --peach: #FFA286;
+      --off-white: #E3E2DF;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--off-white);
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: var(--pink-red);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .navbar h1 {
+      color: white;
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--peach); /* Optional: Change color on hover */
+}
+
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(to right, var(--peach), var(--off-white));
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 48px;
+      color: var(--red-orange);
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .btn-primary {
+      margin-top: 30px;
+      padding: 12px 25px;
+      background-color: var(--red-orange);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--pink-red);
+    }
+
+    /* Section styles */
+    .section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .section h3 {
+      color: var(--pink-red);
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .service-card {
+      background-color: white;
+      border: 2px solid var(--peach);
+      padding: 20px;
+      border-radius: 12px;
+      width: 250px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    /* About section */
+    .about {
+      background-color: var(--peach);
+      color: #333;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h2 {
+        font-size: 36px;
+      }
+
+     
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <h1>MyCreativeSite</h1>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="/service">Services</a>
+      <a href="#about">About Us</a>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <h2>Welcome to Our World</h2>
+    <p>Creative solutions for modern businesses. We blend design and technology to craft unforgettable experiences.</p>
+    <button class="btn-primary">Get Started</button>
+  </section>
+
+ 
+
+  <!-- About -->
+  <section class="section about" id="about">
+    <h3>About Us</h3>
+    <p>We're a passionate team of designers, developers, and strategists who live for creative problem solving. Whether you’re launching a new business or elevating an existing one, we’re here to help.</p>
+  </section>
+
+</body>
+</html>

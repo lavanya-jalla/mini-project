@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Vendor Profiles</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(
+          to bottom right,
+          #3d52a0,
+          #7091e6,
+          #8697c4,
+          #adbbda
+        );
+        min-height: 100vh;
+        color: #fff;
+        padding: 2rem;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 2.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+      .vendor-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      .vendor-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        color: #3d52a0;
+        transition: transform 0.3s ease;
+      }
+      .vendor-card:hover {
+        transform: translateY(-5px);
+      }
+      .vendor-card img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+        object-fit: cover;
+      }
+      .vendor-card h2 {
+        margin: 0.5rem 0;
+        font-size: 1.5rem;
+      }
+      .vendor-card p {
+        margin: 0.3rem 0;
+        font-size: 1rem;
+      }
+      .vendor-card .services {
+        font-style: italic;
+        color: #7091e6;
+        margin: 0.5rem 0;
+      }
+      .vendor-card button {
+        background: #3d52a0;
+        color: #fff;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 1rem;
+        font-size: 1rem;
+      }
+      .vendor-card button:hover {
+        background: #7091e6;
+      }
+    </style>
+  </head>
+  <body onload=" renderVendors()">
+    <div class="container">
+      <h1>Vendor Profiles</h1>
+      <div class="vendor-grid" id="vendor-grid">
+        <!-- Vendor cards will be dynamically added here -->
+      </div>
+    </div>
+
+    <script>
+      const vendors = [
+        {
+          name: "umesh",
+          email: "umesh123@example.com",
+          mobile: "123-456-7890",
+          services: "makeup",
+        },
+        {
+          name: "Vendor Two",
+          email: "vendor2@example.com",
+          mobile: "098-765-4321",
+          services: "Photography, Videography",
+        },
+        {
+          name: "Vendor Three",
+          email: "vendor3@example.com",
+          mobile: "555-555-5555",
+          services: "Decoration, Lighting",
+          image: "https://via.placeholder.com/100?text=V3",
+        },
+      ];
+
+      function renderVendors() {
+        const vendorGrid = document.getElementById("vendor-grid");
+        vendorGrid.innerHTML = "";
+
+        vendors.forEach((vendor) => {
+          const imageSrc =
+            vendor.image || "https://via.placeholder.com/100?text=Vendor";
+            console.log(imageSrc);
+          const vendorCard = document.createElement("div");
+          vendorCard.className = "vendor-card";
+          vendorCard.innerHTML = `
+            <img src="${imageSrc}" alt="${vendor.name}">
+            <h2>${vendor.name}</h2>
+            <p><strong>Email:</strong> ${vendor.email}</p>
+            <p><strong>Mobile:</strong> ${vendor.mobile}</p>
+            <p class="services">${vendor.services}</p>
+            <button onclick="contactVendor('${vendor.email}')">Contact Vendor</button>
+        `;
+          vendorGrid.appendChild(vendorCard);
+        });
+      }
+
+      function contactVendor(email) {
+        alert(`Contacting vendor at ${email}`);
+        // In a real application, this could open a contact form or email client
+      }
+
+      // Render vendors on page load
+    </script>
+  </body>
+</html>

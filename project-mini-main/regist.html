@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Registration</title>
+  <style>
+    :root {
+      --primary: #E7717D;
+      --secondary: #C2CAD0;
+      --neutral: #C2B9B0;
+      --accent: #AFD275;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      margin-top: 40px;
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--neutral);
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .vendor-links {
+      margin-top: 30px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .vendor-links h3 a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .vendor-links h3 a:hover {
+      text-decoration: underline;
+    }
+    p {
+  color: black;
+  text-align: center;
+  margin-top: 20px;
+}
+
+p a {
+  color: #bb86fc;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Vendor Registration</h2>
+    <form action="/register" method="post">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="address">Address</label>
+      <input type="text" id="address" name="address"required />
+
+      <label for="mobile">Mobile Number</label>
+      <input type="tel" id="mobile" name="mobile" required />
+
+      <label for="services">Select Services Offered</label>
+      <select id="services" name="services">
+        <option value="Hairstyling">Hairstyling</option>
+        <option value="Makeup">Makeup</option>
+        <option value="Draping">Draping</option>
+      </select>
+
+      <label for="shop">Shop Address (Optional)</label>
+      <input type="text" id="shop" name="shop" />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+      <button type="submit">Register</button>
+    </form>
+    <p>Already have an account? <a href="/login">Login here</a></p>
+  </div>
+
+</body>
+</html>

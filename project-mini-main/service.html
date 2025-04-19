@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Services</title>
+  <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body and overall page styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  color: #333;
+}
+
+.featured-services {
+  background-color: #87CEEB; /* Sky Blue background */
+  padding: 155px 0;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: 40px;
+}
+
+.services-grid {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.service-card {
+  background-color: #fff;
+  width: 30%;
+  margin: 15px 0;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.icon {
+  font-size: 3rem;
+  color: #87CEEB;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .service-card {
+    width: 80%;
+    margin: 15px auto;
+  }
+}
+  </style>
+</head>
+<body>
+<!-- Featured Services Section -->
+  <section class="featured-services">
+    <div class="container">
+      <h2>Our Featured Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="icon">
+            <i class="fa fa-magic"></i>
+          </div>
+          <h3> <a href="/makeup">Makeup Artistry</a></h3>
+          <p>Enhance your natural beauty with our professional makeup services, tailored to your style and occasion.</p>
+        </div>
+        <div class="service-card">
+          <div class="icon">
+            <i class="fa fa-paint-brush"></i>
+          </div>
+          <h3><a href="/draping">Draping Services</a></h3>
+          <p>Experience elegance with our exquisite draping designs, perfect for weddings and special events.</p>
+        </div>
+        <div class="service-card">
+          <div class="icon">
+            <i class="fa fa-scissors"></i>
+          </div>
+
+
+          <h3><a href="/hairsty"> Hairstyling </a></h3>
+          <p>Achieve the perfect look with our hairstyling services, customized to complement your attire and theme.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
