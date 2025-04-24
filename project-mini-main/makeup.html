@@ -70,6 +70,7 @@
 .vendor-card p {
   margin: 0.3rem 0;
   font-size: 1rem;
+  margin:10px;
 }
 
 .vendor-card .services {
@@ -175,13 +176,14 @@
   <script>
     async function renderVendors() {
       try {
-        const response = await fetch('/api/hairstyle'); // Fetching data from backend
+        const response = await fetch('/api/makeup'); // Fetching data from backend
         const vendors = await response.json(); // Assuming the backend returns the data as JSON
         const vendorGrid = document.getElementById('vendor-grid');
         vendorGrid.innerHTML = ''; // Clear existing content
 
         vendors.forEach((vendor) => {
-          const imageSrc = vendor.image || "https://via.placeholder.com/100?text=Vendor"; // Add vendor image if available
+          const imageSrc = `data:${vendor.profilePic.contentType};base64,${vendor.profilePic.data}`;
+          console.log(imageSrc);
           const vendorCard = document.createElement('div');
           vendorCard.className = 'vendor-card';
           vendorCard.innerHTML = `
@@ -190,9 +192,9 @@
             <p><strong>Email:</strong> ${vendor.email}</p>
             <p><strong>Mobile:</strong> ${vendor.mobile}</p>
             <p><strong>Address:</strong> ${vendor.address}</p>
-            <p><strong>Type:</strong> ${vendor.type}</p>
+            <p><strong>Type:</strong> ${vendor.type}</p>sss
             <p><strong>Shop ID:</strong> ${vendor.shop}</p>
-            <a href="/vendorpage?email=${vendor.email}">Contact Vendor</a>
+            <a href="/vendor-book?email=${vendor.email}">Contact Vendor</a>
           `;
           vendorGrid.appendChild(vendorCard);
         });

@@ -3,13 +3,14 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
-const { MakeupVendor, DrapingVendor, HairstyleVendor } = require('./vendor');
+const { MakeupVendor, DrapingVendor, HairstyleVendor, BookedDate } = require('./vendor');
 
 
 const app = express();
 //convert data into json format
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+
 
 mongoose.connect("mongodb://localhost:27017/loginreg", {
   useNewUrlParser: true,
@@ -28,8 +29,8 @@ function getVendorModel(type) {
   }
 
 // Set storage for Multer
-const storage = multer.memoryStorage();
-const upload = multer({ 
+let storage = multer.memoryStorage();
+let upload = multer({ 
   storage,
   fileFilter: (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
@@ -126,28 +127,57 @@ app.get('/', async (req, res) => {
     res.sendFile(path.join(__dirname,'startpage.html'))
 });
 app.get('/login', async (req, res) => {
-    res.sendFile(path.join(__dirname,'login.html'))
+    res.sendFile(path.join(__dirname,'/login.html'))
 });
 app.get('/regist',(req,res)=>{
-    res.sendFile(path.join(__dirname ,'regist.html'));
+    res.sendFile(path.join(__dirname ,'/regist.html'));
 });
 app.get('/home',(req,res)=>{
-    res.sendFile(path.join(__dirname ,'home.html'))
+    res.sendFile(path.join(__dirname ,'/home.html'))
 });
 app.get('/service',(req,res)=>{
-    res.sendFile(path.join(__dirname ,'service.html'))
+    res.sendFile(path.join(__dirname ,'/service.html'))
 });
 app.get('/makeup', (req,res)=> {
-    res.sendFile(path.join(__dirname ,'makeup.html'))
+    res.sendFile(path.join(__dirname ,'/makeup.html'))
 });
 app.get('/draping', (req,res)=> {
-    res.sendFile(path.join(__dirname ,'draping.html'))
+    res.sendFile(path.join(__dirname ,'/draping.html'))
 });
 app.get('/hairsty',(req,res)=>{
-    res.sendFile(path.join(__dirname ,'hairstyle.html'))
+    res.sendFile(path.join(__dirname ,'/hairstyle.html'))
 });
 app.get('/vendorpage',(req,res)=>{
-    res.sendFile(path.join(__dirname ,'vendorpage.html'))
+    res.sendFile(path.join(__dirname ,'/vendorpage.html'))
+});
+app.get('/vendor booking form',(req,res)=>{
+  res.sendFile(path.join(__dirname ,'/vendorpage.html'))
+});
+app.get("/api/booked-dates", async (req, res) => {
+  const bookings = await BookedDate.find({});
+  res.json(bookings);
+});
+app.post("/api/book-date", async (req, res) => {
+  const { vendorName, customerName, customerEmail, vendorEmail, date, location } = req.body;
+  console.log("Booking data received:", req.body); 
+  const exists = await BookedDate.findOne({ date, vendorName });
+
+  if (exists) return res.status(400).json({ error: "Date already booked" });
+
+  const newBooking = new BookedDate({
+    vendorName,
+    customerName,
+    vendorEmail: vendorEmail,     // Store vendor's email
+    customerEmail:customerEmail,
+    location,
+    date
+  });
+
+  await newBooking.save();
+
+  // TODO: Send email via nodemailer here
+
+  res.status(200).json({ message: "Booking saved" });
 });
 
 app.get('/api/vendor', async (req, res) => {
@@ -162,11 +192,18 @@ app.get('/api/vendor', async (req, res) => {
   
     res.status(404).json({ error: "Vendor not found" });
   });
+  app.get('/show-vendorBook',(req,res)=>{
+    res.sendFile('C:/Users/lavan/Downloads/project-mini-main/project-mini-main/vendor_booking_form.html');
+  })
+  app.get('/vendor-book', (req, res) => {
+    const { email } = req.query;
+    res.redirect(`/show-vendorBook?email=${encodeURIComponent(email)}`);
+  });
   
     
     //register user
-    app.post('/register', async (req, res) => {
-        const { name, email, address, mobile, services, shop, password } = req.body;
+    app.post('/register',upload.single('profilePic'), async (req, res) => {
+        const { name, email, address, mobile, services, shop, password,rating } = req.body;
         const VendorModel = getVendorModel(services); // change here to use 'services'
         if (!VendorModel) return res.status(400).send("Invalid vendor type");
     
@@ -174,18 +211,25 @@ app.get('/api/vendor', async (req, res) => {
         if (existingUser) {
             return res.send("User already exists. Please choose a different email.");
         }
-    
+        profilePic = {};
+        if (req.file) {
+          profilePic = {
+            data: req.file.buffer.toString('base64'),
+            contentType: req.file.mimetype
+          };
+        }
         const newVendor = new VendorModel({
-            name,
-            email,
-            address,
-            mobile,
-            type: services, // store 'services' under 'type' in DB
-            shop,
-            password
+          name,
+          email,
+          address,
+          mobile,
+          type: services,
+          shop,
+          password,
+          profilePic,
+          rating: rating || '' // optional
         });
-        console.log(req.body);
-
+      
         await newVendor.save();
         res.redirect('/login');
     });
