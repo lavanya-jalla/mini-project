@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
-const { MakeupVendor, DrapingVendor, HairstyleVendor, BookedDate } = require('./vendor');
+const { MakeupVendor, DrapingVendor, HairstyleVendor, BookedDate,Feedback } = require('./vendor');
 
 
 const app = express();
@@ -153,6 +153,22 @@ app.get('/vendorpage',(req,res)=>{
 app.get('/vendor booking form',(req,res)=>{
   res.sendFile(path.join(__dirname ,'/vendorpage.html'))
 });
+app.get('/submit-feedback', (req, res) => {
+  const filePath = path.join(__dirname, '/feedback.html');
+  console.log('Serving file:', filePath);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error('Error serving feedback.html:', err);
+      res.status(404).send('Feedback page not found');
+    }
+  });
+});
+app.get('/work', (req, res) => {
+  res.sendFile(path.join(__dirname, '/works.html'));
+});
+
+
+
 app.get("/api/booked-dates", async (req, res) => {
   const bookings = await BookedDate.find({});
   res.json(bookings);
@@ -203,7 +219,7 @@ app.get('/api/vendor', async (req, res) => {
     
     //register user
     app.post('/register',upload.single('profilePic'), async (req, res) => {
-        const { name, email, address, mobile, services, shop, password,rating } = req.body;
+        const { name, email, address, mobile, services, budget, experience, shop, password,rating } = req.body;
         const VendorModel = getVendorModel(services); // change here to use 'services'
         if (!VendorModel) return res.status(400).send("Invalid vendor type");
     
@@ -224,6 +240,8 @@ app.get('/api/vendor', async (req, res) => {
           address,
           mobile,
           type: services,
+          budget,              // add budget
+          experience ,          // add experience
           shop,
           password,
           profilePic,
@@ -252,6 +270,40 @@ app.get('/api/vendor', async (req, res) => {
       
         res.send("Wrong credentials");
       });
+      
+
+      
+
+
+// Serve feedback.html with error handling
+app.get('/submit-feedback', (req, res) => {
+  const filePath = path.join(__dirname, 'feedback.html');
+  console.log('Serving file:', filePath);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error('Error serving feedback.html:', err);
+      res.status(404).send('Feedback page not found');
+    }
+  });
+});
+
+// Handle feedback submission
+app.post('/feedback', async (req, res) => {
+  const { email, rating } = req.body;
+
+  if (!email || !rating) {
+    return res.status(400).json({ error: 'Email and rating are required' });
+  }
+
+  try {
+    const newFeedback = new Feedback({ email, rating });
+    await newFeedback.save();
+    res.status(200).json({ message: 'Feedback submitted successfully' });
+  } catch (error) {
+    console.error('Feedback save error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
       
 
 

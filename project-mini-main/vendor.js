@@ -6,6 +6,8 @@ const vendorSchema = new mongoose.Schema({
   address: String,
   mobile: String,
   type: String,
+  experience: Number,
+  budget: Number ,    
   shop: { type: String, default: '' },
   password: String,
   profilePic: {
@@ -29,9 +31,18 @@ const DrapingVendor = mongoose.model("drapingvendors", vendorSchema);
 const HairstyleVendor = mongoose.model("hairstylevendors", vendorSchema);
 const BookedDate = mongoose.model('vendorBookings',bookedDateSchema);
 
+
+const feedbackSchema = new mongoose.Schema({
+  email: String,
+  rating: Number,
+  createdAt: { type: Date, default: Date.now }
+});
+
+const Feedback = mongoose.model('Feedback', feedbackSchema);
 module.exports = {
   MakeupVendor,
   DrapingVendor,
   HairstyleVendor,
-  BookedDate
+  BookedDate,
+  Feedback
 };

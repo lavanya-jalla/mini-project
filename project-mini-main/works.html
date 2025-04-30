@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vendor Works</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e66465, #9198e5);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: white;
+      margin-bottom: 30px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .gallery img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+    <form action="/work" method="get">
+  <h1>Vendor Works</h1>
+  <div class="gallery" id="gallery"></div>
+
+  <script>
+    async function loadWorks() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const email = urlParams.get('email');
+      if (!email) {
+        alert("Vendor email not found.");
+        return;
+      }
+      
+      try {
+        const response = await fetch(`/api/vendorImages?email=${encodeURIComponent(email)}`);
+        const images = await response.json();
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = '';
+
+        images.forEach(image => {
+          const img = document.createElement('img');
+          img.src = `data:${image.contentType};base64,${image.base64}`;
+          gallery.appendChild(img);
+        });
+      } catch (error) {
+        console.error('Error loading works:', error);
+        alert('Failed to load works.');
+      }
+    }
+
+    loadWorks();
+  </script>
+</body>
+</html>

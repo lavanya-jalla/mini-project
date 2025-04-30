@@ -78,6 +78,30 @@
       }
       .vendor-card button:hover {
         background: #7091e6;
+        .button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.feedback-button {
+  background: #ffffff;
+  color: #3d52a0;
+  border: 2px solid #3d52a0;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+.feedback-button:hover {
+  background: #3d52a0;
+  color: #ffffff;
+}
+
       }
     </style>
   </head>
@@ -129,6 +153,7 @@
             <p><strong>Mobile:</strong> ${vendor.mobile}</p>
             <p class="services">${vendor.services}</p>
             <button onclick="contactVendor('${vendor.email}')">Contact Vendor</button>
+            <button  onclick="giveFeedback('${vendor.email}')">Feedback</button>
         `;
           vendorGrid.appendChild(vendorCard);
         });
@@ -136,6 +161,7 @@
 
       function contactVendor(email) {
         alert(`Contacting vendor at ${email}`);
+        alert(`Leave feedback for ${email}`);
         // In a real application, this could open a contact form or email client
       }
 

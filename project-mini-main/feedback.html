@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Feedback</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .rating-box {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .rating-box h2 {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .stars {
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+      gap: 20px; /* More space between stars */
+      margin-top: 10px;
+      position: relative;
+    }
+
+    .stars input {
+      display: none;
+    }
+
+    .stars label {
+      font-size: 2.5rem;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    /* Correct left-to-right hover and selection effect */
+    .stars label:hover,
+    .stars label:hover ~ label,
+    .stars input:checked ~ label {
+      color: #FFD700;
+    }
+
+    .rating-labels {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.8rem;
+      gap: 20px;
+      font-size: 0.9rem;
+      color: #555;
+      flex-wrap: wrap;
+    }
+    input[type="text"]{
+      padding:5px;
+    }
+    .submit-btn {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="rating-box">
+    <h2>Rate This Vendor</h2>
+    <form action="/feedback" method="POST">
+      <input type="email" name="email" placeholder="Your email" required />
+      <div class="stars">
+        <input type="radio" id="star5" name="rating" value="5" />
+        <label for="star5">&#9733;</label>
+        <input type="radio" id="star4" name="rating" value="4" />
+        <label for="star4">&#9733;</label>
+        <input type="radio" id="star3" name="rating" value="3" />
+        <label for="star3">&#9733;</label>
+        <input type="radio" id="star2" name="rating" value="2" />
+        <label for="star2">&#9733;</label>
+        <input type="radio" id="star1" name="rating" value="1" />
+        <label for="star1">&#9733;</label>
+      </div>
+      <div class="rating-labels">
+        <span>Poor</span>
+        <span>Fair</span>
+        <span>Good</span>
+        <span>Very Good</span>
+        <span>Excellent</span>
+      </div>
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    // JavaScript to properly light up stars left to right
+    const stars = document.querySelectorAll('.stars label');
+    const inputs = document.querySelectorAll('.stars input');
+
+    stars.forEach((star, index) => {
+      star.addEventListener('mouseover', () => {
+        for (let i = 0; i <= index; i++) {
+          stars[i].style.color = '#FFD700';
+        }
+        for (let i = index + 1; i < stars.length; i++) {
+          stars[i].style.color = '#ccc';
+        }
+      });
+
+      star.addEventListener('mouseout', () => {
+        updateStars();
+      });
+
+      star.addEventListener('click', () => {
+        inputs[index].checked = true;
+        updateStars();
+      });
+    });
+
+    function updateStars() {
+      const checkedIndex = Array.from(inputs).findIndex(input => input.checked);
+      stars.forEach((star, index) => {
+        if (index <= checkedIndex) {
+          star.style.color = '#FFD700';
+        } else {
+          star.style.color = '#ccc';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
